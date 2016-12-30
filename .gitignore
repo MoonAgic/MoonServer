@@ -63,6 +63,7 @@ fastlane/report.xml
 fastlane/screenshots
 
 Packages/
-PerfectTemplate.xcodeproj
 Tests/
 webroot/
+MoonServer.xcodeproj/
+
