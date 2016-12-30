@@ -40,7 +40,8 @@ routes.add(method: .get, uri: "/", handler: {
         }
         let result = p.exec(
             statement: "
-                CREATE TABLE user_tbl()
+                select datname,datdba,encoding,datistemplate
+        from pg_database
             ")
         print("connect db")
     }
