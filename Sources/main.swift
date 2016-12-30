@@ -40,7 +40,7 @@ routes.add(method: .get, uri: "/", handler: {
         }
         let result = p.exec(
             statement: "
-                CREATE TABLE user_tbl(name VARCHAR(20), signup_date DATE)
+                CREATE TABLE user_tbl()
             ")
         print("connect db")
     }
