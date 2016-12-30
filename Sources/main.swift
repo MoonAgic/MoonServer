@@ -38,10 +38,7 @@ routes.add(method: .get, uri: "/", handler: {
         defer {
             p.close() // 关闭连接
         }
-        let result = p.exec(
-            statement: "
-                CREATE TABLE films (code char(5) PRIMARY KEY, title varchar(40) NOT NULL)
-            ")
+        let res = p.exec(statement: "CREATE TABLE films (code char(5) PRIMARY KEY, title varchar(40) NOT NULL, did integer NOT NULL, date_prod date, kind1 bytea, kind2 bytea)")
         print("connect db")
     }
 )
