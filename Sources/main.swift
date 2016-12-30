@@ -3,7 +3,7 @@
 //  PerfectTemplate
 //
 //  Created by Kyle Jessup on 2015-11-05.
-//	Copyright (C) 2015 PerfectlySoft, Inc.
+//  Copyright (C) 2015 PerfectlySoft, Inc.
 //
 //===----------------------------------------------------------------------===//
 //
@@ -29,31 +29,35 @@ let server = HTTPServer()
 // Register your own routes and handlers
 var routes = Routes()
 routes.add(method: .get, uri: "/", handler: {
-		request, response in
-		response.setHeader(.contentType, value: "text/html")
-		response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
-		response.completed()
-		let p = PGConnection()
-	    let status = p.connectdb("postgresql://dbuser:password@127.0.0.1:5432/exampledb")
-	    defer {
-	        p.close() // 关闭连接
-	    }
-	    print("connect db")
-	}
+        request, response in
+        response.setHeader(.contentType, value: "text/html")
+        response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
+        response.completed()
+        let p = PGConnection()
+        let status = p.connectdb("postgresql://dbuser:password@127.0.0.1:5432/exampledb")
+        defer {
+            p.close() // 关闭连接
+        }
+        let result = p.exec(
+            statement: "
+                CREATE TABLE user_tbl(name VARCHAR(20), signup_date DATE)
+            ")
+        print("connect db")
+    }
 )
 routes.add(method: .get, uri: "/test/", handler: {
-		request, response in
-		response.setHeader(.contentType, value: "application/json")
-		let scoreArray: [String:Any] = ["第一名": 300, "第二名": 230.45, "第三名": 150]
-		var encoded = ""
-		do {
-		    encoded = try scoreArray.jsonEncodedString()
-		} catch  {
-		    print("UserNotFound")
-		}
-		response.appendBody(string: encoded)
-		response.completed()
-	}
+        request, response in
+        response.setHeader(.contentType, value: "application/json")
+        let scoreArray: [String:Any] = ["第一名": 300, "第二名": 230.45, "第三名": 150]
+        var encoded = ""
+        do {
+            encoded = try scoreArray.jsonEncodedString()
+        } catch  {
+            print("UserNotFound")
+        }
+        response.appendBody(string: encoded)
+        response.completed()
+    }
 )
 
 // Add the routes to the server.
@@ -74,8 +78,8 @@ server.documentRoot = "./webroot"
 configureServer(server)
 
 do {
-	// Launch the HTTP server.
-	try server.start()
+    // Launch the HTTP server.
+    try server.start()
 } catch PerfectError.networkError(let err, let msg) {
-	print("Network error thrown: \(err) \(msg)")
+    print("Network error thrown: \(err) \(msg)")
 }
