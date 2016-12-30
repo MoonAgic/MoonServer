@@ -34,7 +34,7 @@ routes.add(method: .get, uri: "/", handler: {
 		response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
 		response.completed()
 		let p = PGConnection()
-	    let status = p.connectdb("postgresql://dbuser:password@127.0.0.1:5432")
+	    let status = p.connectdb("postgresql://dbuser:password@127.0.0.1:5432/exampledb")
 	    defer {
 	        p.close() // 关闭连接
 	    }
