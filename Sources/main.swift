@@ -67,12 +67,12 @@ routes.add(method: .post, uri: "/regist", handler: {
             print("\(result.status())")
             if result.status() == .commandOK {
                 response.setHeader(.contentType, value: "application/json")
-                let scoreArray: [String:Any] = ["code": errorCode.sucsses]
+                let scoreArray: [String:Any] = ["code": 200]
                 var encoded = ""
                 do {
                     encoded = try scoreArray.jsonEncodedString()
                 } catch {
-                    
+                    print("UserNotFound")
                 }
                 print("\(encoded)")
                 response.appendBody(string: encoded)
@@ -100,7 +100,7 @@ routes.add(method: .post, uri: "/login", handler: {
             tokenCache[account] = token;
             // login sucsses
             response.setHeader(.contentType, value: "application/json")
-            let scoreArray: [String:Any] = ["code": errorCode.sucsses, "token": token]
+            let scoreArray: [String:Any] = ["code": 200, "token": token]
             var encoded = ""
             do {
                 encoded = try scoreArray.jsonEncodedString()
