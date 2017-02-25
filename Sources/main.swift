@@ -96,6 +96,7 @@ routes.add(method: .post, uri: "/login", handler: {
     let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account!)'")
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
         
+        accountP.replacingOccurrences(of: " ", with: "")
         print("-------------")
         for c in (passwd?.characters)! {
             print("\(c)")
