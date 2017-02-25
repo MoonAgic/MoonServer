@@ -26,29 +26,73 @@ import PostgreSQL
 // Create HTTP server.
 let server = HTTPServer()
 
+
 // Register your own routes and handlers
 var routes = Routes()
 routes.add(method: .get, uri: "/", handler: {
         request, response in
         response.setHeader(.contentType, value: "text/html")
-        response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
+        response.appendBody(string: "<html><title>it works!</title><body>it works!</body></html>")
         response.completed()
     }
 )
-routes.add(method: .get, uri: "/test/", handler: {
-        request, response in
-        response.setHeader(.contentType, value: "application/json")
-        let scoreArray: [String:Any] = ["第一名": 300, "第二名": 230.45, "第三名": 150]
-        var encoded = ""
-        do {
-            encoded = try scoreArray.jsonEncodedString()
-        } catch  {
-            print("UserNotFound")
+routes.add(method: .post, uri: "/regist", handler: {
+    request, response in
+    let account = request.param(name: "account")
+    let passwd = request.param(name: "passwd")
+    if account != nil && passwd != nil {
+        let p = PGConnection()
+        let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
+        print("当前数据库连接状态是：\(p.status)")
+        
+        let res = p.exec(statement: "SELECT * FROM _user_table WHERE name = '\(account)'")
+        if let registed = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
+            // this account was registed
+            print("this account was registed")
+        } else {
+            // go to regist
+            print("go to regist")
         }
-        response.appendBody(string: encoded)
-        response.completed()
     }
-)
+})
+routes.add(method: .post, uri: "/login", handler: {
+    request, response in
+    let account = request.param(name: "account")
+    let passwd = request.param(name: "passwd")
+    let p = PGConnection()
+    let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
+    print("当前数据库连接状态是：\(p.status)")
+    
+    let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account)'")
+    if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
+        if accountP == passwd {
+            var token = UUID().string
+            tokenCache[account!] = token;
+            // login sucsses
+            response.setHeader(.contentType, value: "application/json")
+            let scoreArray: [String:Any] = ["code": errorCode.sucsses, "token": token]
+            var encoded = ""
+            do {
+                encoded = try scoreArray.jsonEncodedString()
+            } catch {
+                print("UserNotFound")
+            }
+            response.appendBody(string: encoded)
+            response.completed()
+            return
+        }
+    }
+    // login faild
+    let scoreArray: [String:Any] = ["code": errorCode.wrongPasswdOrAccountNotFount]
+    var encoded = ""
+    do {
+        encoded = try scoreArray.jsonEncodedString()
+    } catch {
+        print("UserNotFound")
+    }
+    response.appendBody(string: encoded)
+    response.completed()
+})
 
 // Add the routes to the server.
 server.addRoutes(routes)
