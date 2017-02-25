@@ -49,9 +49,37 @@ routes.add(method: .post, uri: "/regist", handler: {
         if let registed = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
             // this account was registed
             print("this account was registed")
+            response.setHeader(.contentType, value: "application/json")
+            let scoreArray: [String:Any] = ["code": errorCode.accountWasRegisted]
+            var encoded = ""
+            do {
+                encoded = try scoreArray.jsonEncodedString()
+            } catch {
+                
+            }
+            response.appendBody(string: encoded)
+            response.completed()
         } else {
             // go to regist
             print("go to regist")
+            
+            let result = p.exec(statement: "INSERT INTO _user_table(name, passwd, signup_date) VALUES('\(account)', '\(passwd)', '2017-02-11');")
+            print("\(result.status())")
+            
+            response.setHeader(.contentType, value: "application/json")
+            let scoreArray: [String:Any] = ["code": errorCode.sucsses]
+            var encoded = ""
+            do {
+                encoded = try scoreArray.jsonEncodedString()
+            } catch {
+                
+            }
+            response.appendBody(string: encoded)
+            response.completed()
+        }
+        
+        defer {
+            p.finish()
         }
     }
 })
