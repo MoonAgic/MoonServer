@@ -31,7 +31,7 @@ var routes = Routes()
 routes.add(method: .get, uri: "/", handler: {
         request, response in
         response.setHeader(.contentType, value: "text/html")
-        response.appendBody(string: "<html><title>It works!</title><body>It works!</body></html>")
+        response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
         response.completed()
     }
 )
@@ -47,12 +47,6 @@ routes.add(method: .get, uri: "/test/", handler: {
         }
         response.appendBody(string: encoded)
         response.completed()
-    }
-)
-routes.add(method: .get, uri: "", handler: {
-
-
-
     }
 )
 
