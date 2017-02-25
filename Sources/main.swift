@@ -38,9 +38,9 @@ routes.add(method: .get, uri: "/", handler: {
 )
 routes.add(method: .post, uri: "/regist", handler: {
     request, response in
-    let account = request.param(name: "account")
-    let passwd = request.param(name: "passwd")
-    if account != nil && passwd != nil {
+    let account:String = request.param(name: "account")!
+    let passwd:String = request.param(name: "passwd")!
+    if account != "" && passwd != "" {
         let p = PGConnection()
         let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
         print("当前数据库连接状态是：\(p.status)")
@@ -85,8 +85,8 @@ routes.add(method: .post, uri: "/regist", handler: {
 })
 routes.add(method: .post, uri: "/login", handler: {
     request, response in
-    let account = request.param(name: "account")
-    let passwd = request.param(name: "passwd")
+    let account:String = request.param(name: "account")!
+    let passwd:String = request.param(name: "passwd")!
     let p = PGConnection()
     let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
     print("当前数据库连接状态是：\(p.status)")
@@ -95,7 +95,7 @@ routes.add(method: .post, uri: "/login", handler: {
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
         if accountP == passwd {
             var token = UUID().string
-            tokenCache[account!] = token;
+            tokenCache[account] = token;
             // login sucsses
             response.setHeader(.contentType, value: "application/json")
             let scoreArray: [String:Any] = ["code": errorCode.sucsses, "token": token]
