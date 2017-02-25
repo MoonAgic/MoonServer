@@ -94,7 +94,7 @@ routes.add(method: .post, uri: "/login", handler: {
     print("当前数据库连接状态是：\(p.status)")
     
     let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account)'")
-    if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
+    if let accountP:String = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
         print("accountP:\(accountP)")
         print("passwd:\(passwd)")
         if accountP == passwd {
