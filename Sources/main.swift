@@ -95,10 +95,15 @@ routes.add(method: .post, uri: "/login", handler: {
     
     let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account!)'")
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
-        print("accountP:\(accountP.utf8)")
-        print("passwd:\(passwd?.utf8)")
         
-        if accountP.lowercased() == passwd?.lowercased() {
+        let passwdStr:String = passwd!
+        let accountPasswd:String = accountP
+        
+        
+        print("passwdStr:\(passwdStr)")
+        print("accountPasswd:\(accountPasswd)")
+        
+        if passwdStr == accountPasswd {
             var token = UUID().string
             tokenCache[account!] = token;
             // login sucsses
