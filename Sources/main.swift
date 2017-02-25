@@ -43,7 +43,6 @@ routes.add(method: .post, uri: "/regist", handler: {
     if account != "" && passwd != "" {
         let p = PGConnection()
         let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
-        print("当前数据库连接状态是：\(p.status)")
         
         let res = p.exec(statement: "SELECT * FROM _user_table WHERE name = '\(account)'")
         if let registed = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
@@ -72,9 +71,9 @@ routes.add(method: .post, uri: "/regist", handler: {
                 do {
                     encoded = try scoreArray.jsonEncodedString()
                 } catch {
-                    print("UserNotFound")
+                    
                 }
-                print("\(encoded)")
+                
                 response.appendBody(string: encoded)
                 response.completed()
             }
@@ -91,7 +90,6 @@ routes.add(method: .post, uri: "/login", handler: {
     let passwd = request.param(name: "passwd")
     let p = PGConnection()
     let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
-    print("当前数据库连接状态是：\(p.status)")
     
     let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account!)'")
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
@@ -108,13 +106,13 @@ routes.add(method: .post, uri: "/login", handler: {
             do {
                 encoded = try scoreArray.jsonEncodedString()
             } catch {
-                print("UserNotFound1")
+                
             }
             response.appendBody(string: encoded)
             response.completed()
             return
         } else {
-            print("密码错误")
+            print("wrong passwd")
         }
         
     }
@@ -124,7 +122,7 @@ routes.add(method: .post, uri: "/login", handler: {
     do {
         encoded = try scoreArray.jsonEncodedString()
     } catch {
-        print("UserNotFound2")
+        
     }
     response.appendBody(string: encoded)
     response.completed()
