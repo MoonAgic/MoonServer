@@ -87,29 +87,20 @@ routes.add(method: .post, uri: "/regist", handler: {
 })
 routes.add(method: .post, uri: "/login", handler: {
     request, response in
-    let account:String = request.param(name: "account")!
-    let passwd:String = request.param(name: "passwd")!
+    let account = request.param(name: "account")
+    let passwd = request.param(name: "passwd")
     let p = PGConnection()
     let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
     print("当前数据库连接状态是：\(p.status)")
     
     let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account)'")
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
-        print("accountP:\(accountP)")
-        print("passwd:\(passwd)")
+        print("accountP:\(accountP.utf8)")
+        print("passwd:\(passwd?.utf8)")
         
-        
-        let quotation = "We're a lot alike, you and I."
-        let sameQuotation = "We're a lot alike, you and I."
-        if quotation == sameQuotation {
-            print("These two strings are considered equal")
-        } else {
-            print("These two strings are not considered equal")
-        }
-        
-        if accountP == passwd {
+        if accountP.utf8 == passwd?.utf8 {
             var token = UUID().string
-            tokenCache[account] = token;
+            tokenCache[account!] = token;
             // login sucsses
             response.setHeader(.contentType, value: "application/json")
             let scoreArray: [String:Any] = ["code": 200, "token": token]
