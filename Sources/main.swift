@@ -105,7 +105,7 @@ routes.add(method: .post, uri: "/login", handler: {
             do {
                 encoded = try scoreArray.jsonEncodedString()
             } catch {
-                print("UserNotFound")
+                print("UserNotFound1")
             }
             response.appendBody(string: encoded)
             response.completed()
@@ -113,12 +113,12 @@ routes.add(method: .post, uri: "/login", handler: {
         }
     }
     // login faild
-    let scoreArray: [String:Any] = ["code": errorCode.wrongPasswdOrAccountNotFount]
+    let scoreArray: [String:Any] = ["code": 404]
     var encoded = ""
     do {
         encoded = try scoreArray.jsonEncodedString()
     } catch {
-        print("UserNotFound")
+        print("UserNotFound2")
     }
     response.appendBody(string: encoded)
     response.completed()
