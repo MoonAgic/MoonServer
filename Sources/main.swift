@@ -93,7 +93,7 @@ routes.add(method: .post, uri: "/login", handler: {
     let status = p.connectdb("postgresql://moon:backstreet@localhost:5432/moondb")
     print("当前数据库连接状态是：\(p.status)")
     
-    let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account)'")
+    let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account!)'")
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
         print("accountP:\(accountP.utf8)")
         print("passwd:\(passwd?.utf8)")
