@@ -98,7 +98,7 @@ routes.add(method: .post, uri: "/login", handler: {
         print("accountP:\(accountP.utf8)")
         print("passwd:\(passwd?.utf8)")
         
-        if accountP.utf8 == passwd?.utf8 {
+        if accountP.lowercased() == passwd?.lowercased() {
             var token = UUID().string
             tokenCache[account!] = token;
             // login sucsses
