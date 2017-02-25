@@ -65,17 +65,19 @@ routes.add(method: .post, uri: "/regist", handler: {
             
             let result = p.exec(statement: "INSERT INTO _user_table(name, passwd, signup_date) VALUES('\(account)', '\(passwd)', '2017-02-11');")
             print("\(result.status())")
-            
-            response.setHeader(.contentType, value: "application/json")
-            let scoreArray: [String:Any] = ["code": errorCode.sucsses]
-            var encoded = ""
-            do {
-                encoded = try scoreArray.jsonEncodedString()
-            } catch {
-                
+            if result.status() == .commandOK {
+                response.setHeader(.contentType, value: "application/json")
+                let scoreArray: [String:Any] = ["code": errorCode.sucsses]
+                var encoded = ""
+                do {
+                    encoded = try scoreArray.jsonEncodedString()
+                } catch {
+                    
+                }
+                print("\(encoded)")
+                response.appendBody(string: encoded)
+                response.completed()
             }
-            response.appendBody(string: encoded)
-            response.completed()
         }
         
         defer {
