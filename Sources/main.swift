@@ -96,18 +96,9 @@ routes.add(method: .post, uri: "/login", handler: {
     let res = p.exec(statement: "SELECT passwd FROM _user_table WHERE name = '\(account!)'")
     if let accountP = res.getFieldString(tupleIndex: 0, fieldIndex: 0) {
         
-        accountP.replacingOccurrences(of: " ", with: "")
-        print("-------------")
-        for c in (passwd?.characters)! {
-            print("\(c)")
-        }
-        print("-------------")
-        for c in accountP.characters {
-            print("\(c)")
-        }
-        print("-------------")
+        let accountPasswd = accountP.stringByReplacing(string: " ", withString: "")
         
-        if passwd! == accountP {
+        if passwd! == accountPasswd {
             var token = UUID().string
             tokenCache[account!] = token;
             // login sucsses
