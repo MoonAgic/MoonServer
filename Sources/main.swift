@@ -31,15 +31,8 @@ var routes = Routes()
 routes.add(method: .get, uri: "/", handler: {
         request, response in
         response.setHeader(.contentType, value: "text/html")
-        response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
+        response.appendBody(string: "<html><title>It works!</title><body>It works!</body></html>")
         response.completed()
-        let p = PGConnection()
-        let status = p.connectdb("postgresql://dbuser:password@127.0.0.1:5432/exampledb")
-        defer {
-            p.close() // 关闭连接
-        }
-        let res = p.exec(statement: "CREATE TABLE films (code char(5) PRIMARY KEY, title varchar(40) NOT NULL, did integer NOT NULL, date_prod date, kind1 bytea, kind2 bytea)")
-        print("connect db")
     }
 )
 routes.add(method: .get, uri: "/test/", handler: {
@@ -56,11 +49,17 @@ routes.add(method: .get, uri: "/test/", handler: {
         response.completed()
     }
 )
+routes.add(method: .get, uri: "", handler: {
+
+
+
+    }
+)
 
 // Add the routes to the server.
 server.addRoutes(routes)
 
-server.serverAddress = "0.0.0.0"
+server.serverAddress = "127.0.0.1"
 // Set a listen port of 8181
 server.serverPort = 8181
 
