@@ -99,7 +99,15 @@ routes.add(method: .post, uri: "/login", handler: {
         print("passwd:\(passwd)")
         
         
-        if String(accountP) == String(passwd) {
+        let quotation = "We're a lot alike, you and I."
+        let sameQuotation = "We're a lot alike, you and I."
+        if quotation == sameQuotation {
+            print("These two strings are considered equal")
+        } else {
+            print("These two strings are not considered equal")
+        }
+        
+        if accountP == passwd {
             var token = UUID().string
             tokenCache[account] = token;
             // login sucsses
