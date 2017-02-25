@@ -112,7 +112,10 @@ routes.add(method: .post, uri: "/login", handler: {
             response.appendBody(string: encoded)
             response.completed()
             return
+        } else {
+            print("密码错误")
         }
+        
     }
     // login faild
     let scoreArray: [String:Any] = ["code": 404]
